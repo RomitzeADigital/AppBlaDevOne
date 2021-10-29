@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 
-import { startGoogleLogin } from '../../redux/actions/auth';
+import { startGoogleLogin, startFacebookLogin, removeRedirectIndex } from '../../redux/actions/authActions';
 
 import JsonData from '../../data/data.json';
 
@@ -23,8 +23,16 @@ export const IndexScreen = () => {
     setLandingPageData(JsonData);
   }, []);
 
+  useEffect(() => {
+    dispatch(removeRedirectIndex());
+  }, []);
+
   const handleGoogleLogin = () => {
     dispatch(startGoogleLogin());
+  };
+
+  const handleFacebookLogin = () => {
+    dispatch(startFacebookLogin());
   };
 
   return (
@@ -47,9 +55,9 @@ export const IndexScreen = () => {
                     </a>
                     <Link to='/auth/forgot-password' className='txt-a'>¿OLVIDASTE LA CONTRASEÑA?</Link>
                     <div className='col-md-6'>
-                      <a href='https://es-la.facebook.com/' target='_blank' className='rs_home' rel='noreferrer'>
+                      <span onClick={handleFacebookLogin} className='rs_home'>
                         <img src='./img/svg/fb.svg' alt='' width={36} height={36} />
-                      </a>
+                      </span>
                       <span onClick={handleGoogleLogin} className='rs_home'>
                         <img src='./img/svg/gmail.svg' alt='' width={36} height={36} />
                       </span>
