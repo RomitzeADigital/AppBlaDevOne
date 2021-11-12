@@ -60,24 +60,26 @@ export const startFacebookLogin = () => {
 };
 
 export const startLoginEmailPassword = (email, password) => {
-  firebase.auth().signInWithEmailAndPassword(email, password).then(async ({ user }) => {
-    const user_collection = await db.collection('users').doc(`${user.uid}`);
-    user_collection.get().then(async (doc) => {
-      const data_user = {
-        uid: user.uid,
-        name: user.displayName,
-        data_init: new Date(),
-      };
-      if (doc.exists) {
-        dispatch(loginUser(user.uid, user.displayName));
-        dispatch(userSave(doc.data()));
-      } else {
-        await db.collection('users').doc(`${user.uid}`).set(data_user);
-        dispatch(loginUser(user.uid, user.displayName));
-        dispatch(userSave(data_user));
-      }
+  return (dispatch) => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(async ({ user }) => {
+      const user_collection = await db.collection('users').doc(`${user.uid}`);
+      user_collection.get().then(async (doc) => {
+        const data_user = {
+          uid: user.uid,
+          name: user.displayName,
+          data_init: new Date(),
+        };
+        if (doc.exists) {
+          dispatch(loginUser(user.uid, user.displayName));
+          dispatch(userSave(doc.data()));
+        } else {
+          await db.collection('users').doc(`${user.uid}`).set(data_user);
+          dispatch(loginUser(user.uid, user.displayName));
+          dispatch(userSave(data_user));
+        }
+      });
     });
-  });
+  };
 };
 
 export const starRegisterWithEmailPasswordName = (email, password, name, listContrie) => {
