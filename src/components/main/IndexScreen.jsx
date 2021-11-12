@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 
-import { startGoogleLogin, startFacebookLogin, removeRedirectIndex } from '../../redux/actions/authActions';
+import { startGoogleLogin, startFacebookLogin, removeRedirectIndex, startLoginEmailPassword } from '../../redux/actions/authActions';
 
 import JsonData from '../../data/data.json';
 
@@ -13,6 +13,7 @@ import { Navigation } from '../components/Navigation';
 import { Footer } from '../components/Footer';
 
 import './main.css';
+import { useForm } from '../../hooks/useForm';
 
 export const IndexScreen = () => {
   // declare dispatch
@@ -27,10 +28,23 @@ export const IndexScreen = () => {
     dispatch(removeRedirectIndex());
   }, []);
 
+  // --------------- login de usuario ------------------------
+  // login por correo y contraseña
+  const [formValues, handleImputChange] = useForm({
+    email: '',
+    password: '',
+  });
+  const { email, password } = formValues;
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(startLoginEmailPassword(email, password));
+  };
+  // login por gmail
   const handleGoogleLogin = () => {
     dispatch(startGoogleLogin());
   };
 
+  // login por facebook
   const handleFacebookLogin = () => {
     dispatch(startFacebookLogin());
   };
@@ -46,13 +60,15 @@ export const IndexScreen = () => {
                 <div className='col-md-8 col-md-offset-2 intro-text'>
 
                   <div className='form-group-email'>
-                    <input type='email' id='email' name='email' className='form-control-emal' placeholder='Correo Electrónico' />
-                    <p className='help-block text-danger' />
-                    <input type='password' id='password' name='password' className='form-control-emal' placeholder='Contaseña' />
-                    <p className='help-block text-danger' />
-                    <a>
-                      <img src='./img/svg/iniciar_sesion.svg' alt='' width={693} height={40} />
-                    </a>
+                    <form onSubmit={handleLogin}>
+                      <input type='email' id='email' name='email' onChange={handleImputChange} className='form-control-emal' placeholder='Correo Electrónico' />
+                      <p className='help-block text-danger' />
+                      <input type='password' id='password' name='password' onChange={handleImputChange} className='form-control-emal' placeholder='Contaseña' />
+                      <p className='help-block text-danger' />
+                      <button type='submit' className=''>
+                        Login
+                      </button>
+                    </form>
                     <Link to='/auth/forgot-password' className='txt-a'>¿OLVIDASTE LA CONTRASEÑA?</Link>
                     <div className='col-md-6'>
                       <span onClick={handleFacebookLogin} className='rs_home'>

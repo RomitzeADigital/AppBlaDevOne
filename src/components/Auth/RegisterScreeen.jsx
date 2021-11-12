@@ -87,7 +87,7 @@ export const RegisterScreeen = () => {
               <div className='row'>
 
                 <div className='col-md-6 col-md-offset-2 intro-text'>
-                  <form onSubmit={handleRegister}>
+                  <form onSubmit={handleRegister} autoComplete='off'>
                     {msgError && (
                       <div className='auth__alert-error'>
                         {msgError}
@@ -149,7 +149,7 @@ export const RegisterScreeen = () => {
                         <p className='help-block text-danger' />
                       </a> */}
                       <button type='submit' className=''>
-                        Login
+                        Registrar
                       </button>
                       <img src={Asset8} alt='' width={368} height={40} />
                       <Link to='/'>

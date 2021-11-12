@@ -1,7 +1,10 @@
 // This file contains the typing that is handled by redux
 // eslint-disable-next-line import/prefer-default-export
 export const types = {
-  'LOGIN_USER': 'LOGIN_USER',
+  login: '[Auth] Login',
+  user: '[Auth] User',
+  logout: '[Auth] Logout',
+
   uiSetError: '[UI] Set Error',
   uiRemoveError: '[UI] Remove Error',
 

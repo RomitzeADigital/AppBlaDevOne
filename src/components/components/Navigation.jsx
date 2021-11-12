@@ -1,8 +1,18 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+// actions
+import { startLogout } from '../../redux/actions/authActions';
 
 import './style/navigation.css';
 
 export const Navigation = (props) => {
+  // declaracion de  estados
+  const { userData } = useSelector((state) => state.auth);
+  // declaracion del dispatch
+  const dispatch = useDispatch();
+  const logoutUser = () => {
+    dispatch(startLogout());
+  };
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
       <div className='container-fluid'>
@@ -33,10 +43,14 @@ export const Navigation = (props) => {
               <a className='nav-link disabled'>Disabled</a>
             </li>
           </ul>
-          <form className='d-flex'>
-            <input className='form-control me-2' type='search' placeholder='Search' aria-label='Search' />
-            <button className='btn btn-outline-success' type='submit'>Search</button>
-          </form>
+          {Object.keys(userData).length > 0 ? (
+            <>
+              <div className='d-flex'>
+                <button className='btn btn-outline-danger' onClick={() => logoutUser()} type='submit'>Salir</button>
+              </div>
+            </>
+          ) : <></>}
+
         </div>
       </div>
     </nav>
